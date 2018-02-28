@@ -13,12 +13,14 @@ const space = 32
 
 func WriteStringToFile(filepath, s string) error {
 	fo, err := os.Create(filepath)
+	defer fo.Close()
+
 	if err != nil {
 		return err
 	}
-	defer fo.Close()
 
 	_, err = io.Copy(fo, strings.NewReader(s))
+
 	if err != nil {
 		return err
 	}
@@ -33,9 +35,11 @@ func main() {
 	fileScanner := bufio.NewScanner(file)
 	code := ""
 	isComment := false
+	areSpaces := true
 	prev := -1
 
 	for fileScanner.Scan() {
+		areSpaces = true
 		for _, c := range fileScanner.Text() {
 			if !isComment {
 				if c == diag {
@@ -43,18 +47,19 @@ func main() {
 						prev = -1
 						break
 					}
-					prev = diag
+					prev, areSpaces = diag, false
 				} else if c == ast && prev == diag {
 					isComment = true
 				} else {
 					if c != space {
 						code += string(c)
+						areSpaces = false
 					}
 					prev = -1
 				}
 			} else {
 				if c == ast {
-					prev = ast
+					prev, areSpaces = ast, false
 				} else if c == diag && prev == ast {
 					isComment = false
 				} else {
@@ -62,9 +67,12 @@ func main() {
 				}
 			}
 		}
+		if !areSpaces {
+			code += " "
+		}
 	}
 
-	if err := WriteStringToFile("fuente.go", code); err != nil {
+	if err := WriteStringToFile("fuente", code); err != nil {
 		panic(err)
 	}
 
