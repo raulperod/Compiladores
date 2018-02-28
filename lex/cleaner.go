@@ -10,6 +10,7 @@ import (
 const diag = 47 // diagonal
 const ast = 42  // asterisk
 const space = 32
+const df = -1
 
 func WriteStringToFile(filepath, s string) error {
 	fo, err := os.Create(filepath)
@@ -30,21 +31,21 @@ func WriteStringToFile(filepath, s string) error {
 
 func main() {
 
-	file, _ := os.Open("tarea1.cpp")
+	file, _ := os.Open("prueba.go")
 	defer file.Close()
 	fileScanner := bufio.NewScanner(file)
 	code := ""
 	isComment := false
 	areSpaces := true
-	prev := -1
+	prev := df
 
 	for fileScanner.Scan() {
-		areSpaces = true
+		areSpaces, prev = true, df
 		for _, c := range fileScanner.Text() {
 			if !isComment {
 				if c == diag {
 					if prev == diag {
-						prev = -1
+						prev = df
 						break
 					}
 					prev, areSpaces = diag, false
@@ -54,8 +55,10 @@ func main() {
 					if c != space {
 						code += string(c)
 						areSpaces = false
+					} else if prev != space {
+						code += " "
+						prev = space
 					}
-					prev = -1
 				}
 			} else {
 				if c == ast {
@@ -63,7 +66,7 @@ func main() {
 				} else if c == diag && prev == ast {
 					isComment = false
 				} else {
-					prev = -1
+					prev = df
 				}
 			}
 		}
