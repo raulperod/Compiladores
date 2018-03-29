@@ -1,11 +1,14 @@
-grupo_de_sentencias	    : 	sentencia
-						| 	sentencia grupo_de_sentencias 			
-						;
+grupo_de_sentencias : 	sentencia
+                    | 	sentencia grupo_de_sentencias 			
+                    ;
 						
-sentencia 	: 	asignacion 
+sentencia   : 	asignacion 
             | 	sentencia_if 								
             |   for						
-            |	funcion				
+            |	switch
+            |   go
+            |   fallthrough
+            |   defer		
             ;		
                                                         
 asignacion	:	asignacion_simple 
@@ -15,9 +18,9 @@ asignacion	:	asignacion_simple
 asignacion_simple   :   asignacion_simple_izquierda   asignacion_simple_centro   asignacion_simple_derecha
                     ;
 					
-asignacion_simple_izquierda     :   T_VAR   T_IDENT
-                                |   T_IDENT
-                                ;
+asignacion_simple_izquierda :   T_VAR   T_IDENT
+                            |   T_IDENT
+                            ;
 
 asignacion_simple_centro   :   tipo_dato
                            |   EPSILON
@@ -84,3 +87,25 @@ for_centro  :   condicion
 
 for_derecha :  T_CBKT_LEFT   grupo_de_sentencias   T_CBKT_RIGHT
             ;
+
+switch  :   T_SWITCH   switch_centro   switch_derecha   
+        ;
+
+switch_centro   :   T_IDENT
+                |   asignacion_simple
+                ;
+
+switch_derecha  :   T_CBKT_LEFT   grupo_de_case   T_CBKT_RIGHT
+                ;
+
+grupo_de_case   :   case   
+                |   case grupo_de_case
+                |   EPSILON
+                ;
+
+case    :   T_CASE   case_derecha
+        |   T_DEFAULT   case_derecha
+        ;    
+    
+case_derecha    :   condicion   T_COLON    grupo_de_sentencias
+                ;
