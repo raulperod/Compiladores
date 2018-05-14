@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("HolaMundo")
+	bool
+	byte
+	float32
+	float64
+	int
+	int8
+	int16
+	int32
+	int64
+	rune
+	string
+	true
+	false
 }

@@ -18,13 +18,13 @@ const (
 	initState = 0
 )
 
-func getTT() [161][59]int {
+func getTT() [193][68]int {
 
 	var file, _ = os.Open("tabla_de_transiciones_2.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 
-	var stateTransitions = [161][59]int{}
+	var stateTransitions = [193][68]int{}
 	var state = 0
 
 	for fileScanner.Scan() {
@@ -46,9 +46,8 @@ func getTokens() map[int]string {
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var tokens = make(map[int]string)
-
 	// coloco los estados de los tokens identificadores
-	for i := 0; i < 161; i++ {
+	for i := 0; i < 193; i++ {
 		tokens[i] = "T_IDENT"
 	}
 	// coloco los demas remplazando los de ident si es necesario
@@ -64,16 +63,12 @@ func getTokens() map[int]string {
 
 func getSymbol(index int) int {
 	switch {
-	case index > 32 && index < 48: // caracteres especiales
-		return index - 33 // 0 - 14
-	case index > 47 && index < 58: // numeros 0-9
-		return 15
-	case index > 57 && index < 65: // caracteres especiales
-		return index - 42 // 16 - 22
+	case index > 32 && index < 65: // caracteres especiales y numeros 0-9
+		return index - 33 // 0 - 31
 	case index > 64 && index < 91: // letras mayusculas
-		return 23
+		return 32
 	case index > 90 && index < 126: // caracteres especiales y letras minusculas
-		return index - 67 // 24 - 58
+		return index - 58 // 33 - 67
 	default:
 		return -1
 	}
