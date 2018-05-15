@@ -18,12 +18,78 @@ const (
 	initState = 0
 )
 
+type Token struct {
+	line   int
+	t_type string
+	next   *Token
+}
+
+type Queue struct {
+	init, final *Token
+	length      int
+}
+
+func newQueue() Queue {
+	var q Queue
+	q.init = nil
+	q.final = nil
+	q.length = 0
+	return q
+}
+
+func (q *Queue) Append(token *Token) {
+	if token == nil {
+		return
+	}
+
+	var t *Token
+	t = token
+
+	if q.init != nil {
+		t.next = nil
+		q.final.next = t
+		q.final = t
+	} else {
+		t.next = nil
+		q.init = t
+		q.final = t
+	}
+
+	q.length++
+}
+
+func (q *Queue) Pop() *Token {
+	var t *Token
+
+	if q.init != nil {
+		t = q.init
+		q.init = t.next
+		q.length--
+		if q.length == 0 {
+			q.final = nil
+			return nil
+		}
+		return t
+	}
+
+	return nil
+}
+
+func (q *Queue) PrintQueue() {
+	var t *Token
+	t = q.init
+
+	for t != nil {
+		fmt.Println("Token:", t.t_type, "Linea:", t.line)
+		t = t.next
+	}
+}
+
 func getTT() [193][68]int {
 
 	var file, _ = os.Open("tabla_de_transiciones_2.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-
 	var stateTransitions = [193][68]int{}
 	var state = 0
 
@@ -74,15 +140,19 @@ func getSymbol(index int) int {
 	}
 }
 
-func printToken(tokens map[int]string, state int) {
+func getToken(tokens map[int]string, state, line int) *Token {
 	if state != initState {
-		fmt.Println(tokens[state])
+		var newToken Token
+		newToken.line = line
+		newToken.t_type = tokens[state]
+		return &newToken
 	}
+	return nil
 }
 
 func main() {
 
-	var file, _ = os.Open("prueba.go")
+	var file, _ = os.Open("test.go")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var isComment = false
@@ -91,6 +161,8 @@ func main() {
 	var tokens = getTokens()
 	var prevState = 0
 	var state = 0
+	var line = 1
+	var inputTokens = newQueue()
 
 	for fileScanner.Scan() {
 		for _, c := range fileScanner.Text() {
@@ -112,7 +184,7 @@ func main() {
 						prevState = state
 						state = tt[state][getSymbol(int(c))]
 						if state == badState {
-							printToken(tokens, prevState)
+							inputTokens.Append(getToken(tokens, prevState, line))
 							state, prevState = 0, 0
 							state = tt[state][getSymbol(int(c))]
 							if state == badState {
@@ -122,7 +194,7 @@ func main() {
 						prev = df
 					} else if prev != space || prev != tab {
 						prev = space
-						printToken(tokens, state)
+						inputTokens.Append(getToken(tokens, state, line))
 						state, prevState = 0, 0
 					}
 				}
@@ -136,9 +208,11 @@ func main() {
 				}
 			}
 		}
-		printToken(tokens, state)
+		inputTokens.Append(getToken(tokens, state, line))
 		state, prevState = 0, 0
 		prev = df
+		line++
 	}
 
+	inputTokens.PrintQueue()
 }
