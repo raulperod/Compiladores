@@ -1,4 +1,4 @@
-package main
+package lexical
 
 import (
 	"bufio"
@@ -29,12 +29,9 @@ type Queue struct {
 	length      int
 }
 
-func newQueue() Queue {
+func NewQueue() *Queue {
 	var q Queue
-	q.init = nil
-	q.final = nil
-	q.length = 0
-	return q
+	return &q
 }
 
 func (q *Queue) Append(token *Token) {
@@ -85,9 +82,13 @@ func (q *Queue) PrintQueue() {
 	}
 }
 
-func getTT() [193][68]int {
+func (q *Queue) TOQ() string {
+	return q.init.t_type
+}
 
-	var file, _ = os.Open("tabla_de_transiciones_2.csv")
+func GetTT() [193][68]int {
+
+	var file, _ = os.Open("lexical_files/transitions_table_2.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var stateTransitions = [193][68]int{}
@@ -106,9 +107,9 @@ func getTT() [193][68]int {
 
 }
 
-func getTokens() map[int]string {
+func GetTokens() map[int]string {
 
-	var file, _ = os.Open("words.csv")
+	var file, _ = os.Open("lexical_files/words.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var tokens = make(map[int]string)
@@ -127,7 +128,7 @@ func getTokens() map[int]string {
 	return tokens
 }
 
-func getSymbol(index int) int {
+func GetSymbol(index int) int {
 	switch {
 	case index > 32 && index < 65: // caracteres especiales y numeros 0-9
 		return index - 33 // 0 - 31
@@ -140,7 +141,7 @@ func getSymbol(index int) int {
 	}
 }
 
-func getToken(tokens map[int]string, state, line int) *Token {
+func GetToken(tokens map[int]string, state, line int) *Token {
 	if state != initState {
 		var newToken Token
 		newToken.line = line
@@ -150,19 +151,18 @@ func getToken(tokens map[int]string, state, line int) *Token {
 	return nil
 }
 
-func main() {
-
-	var file, _ = os.Open("test.go")
+func LexicalAnalysis(archivo string) *Queue {
+	var file, _ = os.Open(archivo)
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var isComment = false
 	var prev = df
-	var tt = getTT()
-	var tokens = getTokens()
+	var tt = GetTT()
+	var tokens = GetTokens()
 	var prevState = 0
 	var state = 0
 	var line = 1
-	var inputTokens = newQueue()
+	var inputTokens = NewQueue()
 
 	for fileScanner.Scan() {
 		for _, c := range fileScanner.Text() {
@@ -174,7 +174,7 @@ func main() {
 						break
 					}
 					prevState = state
-					state = tt[state][getSymbol(int(c))]
+					state = tt[state][GetSymbol(int(c))]
 					prev = diag
 				} else if c == ast && prev == diag {
 					isComment, prev = true, df
@@ -182,11 +182,11 @@ func main() {
 				} else {
 					if c != space && c != tab {
 						prevState = state
-						state = tt[state][getSymbol(int(c))]
+						state = tt[state][GetSymbol(int(c))]
 						if state == badState {
-							inputTokens.Append(getToken(tokens, prevState, line))
+							inputTokens.Append(GetToken(tokens, prevState, line))
 							state, prevState = 0, 0
-							state = tt[state][getSymbol(int(c))]
+							state = tt[state][GetSymbol(int(c))]
 							if state == badState {
 								os.Exit(1)
 							}
@@ -194,7 +194,7 @@ func main() {
 						prev = df
 					} else if prev != space || prev != tab {
 						prev = space
-						inputTokens.Append(getToken(tokens, state, line))
+						inputTokens.Append(GetToken(tokens, state, line))
 						state, prevState = 0, 0
 					}
 				}
@@ -208,11 +208,13 @@ func main() {
 				}
 			}
 		}
-		inputTokens.Append(getToken(tokens, state, line))
+		inputTokens.Append(GetToken(tokens, state, line))
 		state, prevState = 0, 0
 		prev = df
 		line++
 	}
+	// add dollar
+	inputTokens.Append(&Token{line: line, t_type: "DOLLAR"})
 
-	inputTokens.PrintQueue()
+	return inputTokens
 }

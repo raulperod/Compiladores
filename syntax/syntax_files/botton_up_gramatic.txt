@@ -1,0 +1,75 @@
+---------------------------------------------------------
+Estado 0
+
+INICIO -> . GRUPO_DE_SENTENCIAS
+GRUPO_DE_SENTENCIAS -> . SENTENCIA GRUPO_DE_SENTENCIAS
+GRUPO_DE_SENTENCIAS -> EPSILON . // REDUCE 2
+SENTENCIA -> . IMPORTACION
+IMPORTACION -> . T_IMPORT IMPORTACION_DERECHA
+---------------------------------------------------------
+Estado 0 a Estado 1 transicion con GRUPO_DE_SENTENCIAS
+
+INICIO -> GRUPO_DE_SENTENCIAS .   // Reduce 0 
+---------------------------------------------------------
+Estado 0 a Estado 2 transicion con SENTENCIA
+
+GRUPO_DE_SENTENCIAS -> SENTENCIA . GRUPO_DE_SENTENCIAS
+GRUPO_DE_SENTENCIAS -> . SENTENCIA GRUPO_DE_SENTENCIAS
+GRUPO_DE_SENTENCIAS -> EPSILON . // REDUCE 2
+SENTENCIA -> . IMPORTACION
+IMPORTACION -> . T_IMPORT IMPORTACION_DERECHA
+---------------------------------------------------------
+Estado 2 a Estado 3 transicion con GRUPO_DE_SENTENCIAS
+
+GRUPO_DE_SENTENCIAS -> SENTENCIA GRUPO_DE_SENTENCIAS . // REDUCE 1
+---------------------------------------------------------
+Estado 2 a Estado 2 transicion con SENTENCIA 
+---------------------------------------------------------
+Estado 2 a Estado 4 transicion con IMPORTACION
+
+SENTENCIA -> IMPORTACION . // REDUCE 3
+---------------------------------------------------------
+Estado 2 a Estado 5 transicion con T_IMPORT
+
+IMPORTACION -> T_IMPORT . IMPORTACION_DERECHA
+IMPORTACION_DERECHA -> . T_STRING_V
+IMPORTACION_DERECHA -> . T_BKT_LEFT PAQUETES T_BKT_RIGHT
+---------------------------------------------------------
+Estado 5 a Estado 6 transicion con IMPORTACION_DERECHA
+
+IMPORTACION -> T_IMPORT IMPORTACION_DERECHA . // REDUCE 4   
+---------------------------------------------------------
+Estado 5 a Estado 7 transicion con T_STRING_V
+
+IMPORTACION_DERECHA -> T_STRING_V . // REDUCE 5
+---------------------------------------------------------
+Estado 5 a Estado 8 transicion con T_BKT_LEFT
+
+IMPORTACION_DERECHA -> T_BKT_LEFT . PAQUETES T_BKT_RIGHT
+PAQUETES -> . T_STRING_V PAQUETES
+PAQUETES -> EPSILON . // REDUCE 8
+---------------------------------------------------------
+Estado 8 a Estado 9 transicion con PAQUETES
+
+IMPORTACION_DERECHA -> T_BKT_LEFT PAQUETES . T_BKT_RIGHT
+---------------------------------------------------------
+Estado 9 a Estado 10 transicion con T_BKT_RIGHT
+
+IMPORTACION_DERECHA -> T_BKT_LEFT PAQUETES T_BKT_RIGHT . // REDUCE 6
+---------------------------------------------------------
+Estado 8 a Estado 11 transicion con T_STRING_V
+
+PAQUETES -> T_STRING_V . PAQUETES
+PAQUETES -> . T_STRING_V PAQUETES
+PAQUETES -> EPSILON .
+---------------------------------------------------------
+Estado 11 a Estado 12 transicion con PAQUETES
+
+PAQUETES -> T_STRING_V PAQUETES . // REDUCE 7
+---------------------------------------------------------
+Estado 11 a Estado 11 transicion con T_STRING_V
+---------------------------------------------------------
+Estado 0 a Estado 4 transicion con IMPORTACION
+---------------------------------------------------------
+Estado 0 a Estado 5 transicion con T_IMPORT
+---------------------------------------------------------
