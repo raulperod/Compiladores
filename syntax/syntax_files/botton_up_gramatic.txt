@@ -61,7 +61,7 @@ Estado 8 a Estado 11 transicion con T_STRING_V
 
 PAQUETES -> T_STRING_V . PAQUETES
 PAQUETES -> . T_STRING_V PAQUETES
-PAQUETES -> EPSILON .
+PAQUETES -> EPSILON . // REDUCE 8
 ---------------------------------------------------------
 Estado 11 a Estado 12 transicion con PAQUETES
 
