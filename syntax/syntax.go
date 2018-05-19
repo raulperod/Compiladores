@@ -132,11 +132,11 @@ func GetRules() [9]Rule {
 	return rules
 }
 
-func GetActionTable() [13][82]int {
+func GetActionTable() [228][83]int {
 	var file, _ = os.Open("syntax_files/action_2.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var actionTable = [13][82]int{}
+	var actionTable = [228][83]int{}
 	var state = 0
 
 	for fileScanner.Scan() {
@@ -151,11 +151,11 @@ func GetActionTable() [13][82]int {
 	return actionTable
 }
 
-func GetGotoTable() [13][6]int {
+func GetGotoTable() [228][59]int {
 	var file, _ = os.Open("syntax_files/goto_2.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var gotoTable = [13][6]int{}
+	var gotoTable = [228][59]int{}
 	var state = 0
 
 	for fileScanner.Scan() {
@@ -170,31 +170,31 @@ func GetGotoTable() [13][6]int {
 	return gotoTable
 }
 
-func IsAccepted(action [13][82]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsAccepted(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	return action[stack.TOS()][terminales[input.TOQ()]] == 1000
 }
 
-func IsShift(action [13][82]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsShift(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	fmt.Println("shift:", action[tos][terminal])
 	return action[tos][terminal] > 0 && action[tos][terminal] < 1000
 }
 
-func GetShift(action [13][82]int, stack *Stack, input *lexical.Queue, terminales map[string]int) (int, string) {
+func GetShift(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) (int, string) {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	return action[tos][terminal], input.TOQ()
 }
 
-func IsReduce(action [13][82]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsReduce(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	fmt.Println("reduce:", action[tos][terminal])
 	return action[tos][terminal] > 1000 && action[tos][terminal] < 2000
 }
 
-func GetReduce(action [13][82]int, stack *Stack, input *lexical.Queue, terminales map[string]int) int {
+func GetReduce(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) int {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	return action[tos][terminal] - 1000
