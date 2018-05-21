@@ -26,7 +26,7 @@ DOLLAR,DOLLAR,DOLLAR,DOLLAR,DOLLAR,T_BKT_RIGHT,DOLLAR,DOLLAR,T_INT_R,T_INT_R,DOL
 ,,,,,,,,,,,,,,,,T_MOD_EQ,T_MOD_EQ,T_MOD_EQ,,T_MOD_EQ,,,,,,,,,T_DIV,,T_DIV,T_DIV,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,T_AND_EQ,T_AND_EQ,T_AND_EQ,,T_AND_EQ,,,,,,,,,T_MOD,,T_MOD,T_MOD,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,T_OR_EQ,T_OR_EQ,T_OR_EQ,,T_OR_EQ,,,,,,,,,T_AND,,T_AND,T_AND,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,T_EQ_EQ,T_EQ_EQ,T_EQ_EQ,,T_EQ_EQ,,,,,,,,,T_OR,,T_OR,T_OR,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,T_EQ,T_EQ,T_EQ,,T_EQ,,,,,,,,,T_OR,,T_OR,T_OR,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,T_COLON_EQ,T_COLON_EQ,T_COLON_EQ,,T_COLON_EQ,,,,,,,,,T_GREATER_GREATER,,T_GREATER_GREATER,T_GREATER_GREATER,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,T_PLUS_PLUS,T_PLUS_PLUS,T_PLUS_PLUS,,T_PLUS_PLUS,,,,,,,,,T_LESS_LESS,,T_LESS_LESS,T_LESS_LESS,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,T_SUB_SUB,T_SUB_SUB,T_SUB_SUB,,T_SUB_SUB,,,,,,,,,T_GREATER_THAN,,T_GREATER_THAN,T_GREATER_THAN,,,,,,,,,,,,,,,,,,,,,,,,,,
