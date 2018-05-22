@@ -1938,7 +1938,7 @@ ESTADO 179  TRANSICION DE 153 A 179 POR CONDICION
 
 139) CICLO_FOR_CENTRO -> ASIGNACION_DE_VARIABLE T_SEMICOLON CONDICION . T_SEMICOLON ASIGNACION_DE_VARIABLE 
 ------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 60  TRANSICION DE 153 A 60 POR CONDICION  
+REPETIDO ESTADO 60  TRANSICION DE 153 A 60 POR T_BKT_LEFT  
 
 115) CONDICION -> T_BKT_LEFT . CONDICION T_BKT_RIGHT
 ------------------------------------------------------------------------------------------------------------------
@@ -2124,31 +2124,6 @@ ESTADO 185  TRANSICION DE 164 A 185 POR T_CBKT_RIGHT
 
 114) IF -> T_IF CONDICION T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT . // REDUCE 114
 ------------------------------------------------------------------------------------------------------------------
-ESTADO 186  TRANSICION DE 119 A 186 POR VALOR_OPERACION                      
-
-90) OPERACIONES_DERECHA -> OPERADOR VALOR_OPERACION . OPERACIONES_DERECHA
-90) OPERACIONES_DERECHA -> . OPERADOR VALOR_OPERACION OPERACIONES_DERECHA
-91) OPERACIONES_DERECHA -> EPSILON . // REDUCE 91
-92) OPERADOR -> . OPERADOR_ARITMETICO
-93) OPERADOR -> . OPERADOR_LOGICO
-94) OPERADOR_ARITMETICO -> . T_PLUS
-95) OPERADOR_ARITMETICO -> . T_SUB
-96) OPERADOR_ARITMETICO -> . T_MULT
-97) OPERADOR_ARITMETICO -> . T_DIV
-98) OPERADOR_ARITMETICO -> . T_MOD
-99) OPERADOR_ARITMETICO -> . T_AND
-100) OPERADOR_ARITMETICO -> . T_OR
-101) OPERADOR_ARITMETICO -> . T_GREATER_GREATER
-102) OPERADOR_ARITMETICO -> . T_LESS_LESS
-103) OPERADOR_LOGICO -> . T_GREATER_THAN
-104) OPERADOR_LOGICO -> . T_GREATER_EQ
-105) OPERADOR_LOGICO -> . T_LESS_THAN
-106) OPERADOR_LOGICO -> . T_LESS_EQ
-107) OPERADOR_LOGICO -> . T_EQ_EQ
-108) OPERADOR_LOGICO -> . T_NOT_EQ
-109) OPERADOR_LOGICO -> . T_OR_OR
-110) OPERADOR_LOGICO -> . T_AND_AND
-------------------------------------------------------------------------------------------------------------------
 REPETIDO ESTADO 63  TRANSICION DE 119 A 63 POR NEGACION
 
 76) VALOR_OPERACION -> NEGACION . VALOR_OPERACION_DERECHA 
@@ -2277,7 +2252,7 @@ ESTADO 191  TRANSICION DE 170 A 191 POR CONDICION
 
 124) CASE -> T_CASE CONDICION . T_COLON GRUPO_DE_SENTENCIAS
 ------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 60  TRANSICION DE 170 A 60 POR CONDICION  
+REPETIDO ESTADO 60  TRANSICION DE 170 A 60 POR T_BKT_LEFT  
 
 115) CONDICION -> T_BKT_LEFT . CONDICION T_BKT_RIGHT
 ------------------------------------------------------------------------------------------------------------------
@@ -2490,7 +2465,7 @@ ESTADO 200  TRANSICION DE 181 A 200 POR T_CBKT_RIGHT
 
 39) DEFINICION_DE_ESTRUCTURA -> T_TYPE T_IDENT T_STRUCT T_CBKT_LEFT DECLARACION_DE_VARIABLES_ESTRUCTURA T_CBKT_RIGHT . // REDUCE 39
 ------------------------------------------------------------------------------------------------------------------
-ESTADO 201  TRANSICION DE 182 A 201 POR T_IDENT                                     
+ESTADO 201  TRANSICION DE 182 A 201 POR TIPO_DE_VARIABLE                                     
 
 40) DECLARACION_DE_VARIABLES_ESTRUCTURA -> T_IDENT TIPO_DE_VARIABLE . DECLARACION_DE_VARIABLES_ESTRUCTURA
 40) DECLARACION_DE_VARIABLES_ESTRUCTURA -> . T_IDENT TIPO_DE_VARIABLE DECLARACION_DE_VARIABLES_ESTRUCTURA
@@ -2555,90 +2530,6 @@ REPETIDO ESTADO 101  TRANSICION DE 182 A 101 POR T_MULT
 ESTADO 202  TRANSICION DE 184 A 202 POR T_CBKT_RIGH                    
 
 119) ELSE -> T_ELSE T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGH . // REDUCE 119
-------------------------------------------------------------------------------------------------------------------
-ESTADO 203  TRANSICION DE 186 A 203 POR VALOR_OPERACION                      
-
-90) OPERACIONES_DERECHA -> OPERADOR VALOR_OPERACION OPERACIONES_DERECHA . // REDUCE 90
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 119  TRANSICION DE 186 A 119 POR OPERADOR 
-
-90) OPERACIONES_DERECHA -> OPERADOR . VALOR_OPERACION OPERACIONES_DERECHA
------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 120  TRANSICION DE 186 A 120 POR OPERADOR_ARITMETICO
-
-92) OPERADOR -> OPERADOR_ARITMETICO . // REDUCE 92
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 121  TRANSICION DE 186 A 121 POR OPERADOR_LOGICO
-
-93) OPERADOR -> OPERADOR_LOGICO . // REDUCE 93
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 122  TRANSICION DE 186 A 122 POR T_PLUS
-
-94) OPERADOR_ARITMETICO -> T_PLUS . // REDUCE 94
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 123  TRANSICION DE 186 A 123 POR T_SUB
-
-95) OPERADOR_ARITMETICO -> T_SUB . // REDUCE 95
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 124  TRANSICION DE 186 A 124 POR T_MULT
-
-96) OPERADOR_ARITMETICO -> T_MULT . // REDUCE 96
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 125  TRANSICION DE 186 A 125 POR T_DIV
-
-97) OPERADOR_ARITMETICO -> T_DIV . // REDUCE 97
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 126  TRANSICION DE 186 A 126 POR T_MOD
-
-98) OPERADOR_ARITMETICO -> T_MOD . // REDUCE 98
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 127  TRANSICION DE 186 A 127 POR T_AND
-
-99) OPERADOR_ARITMETICO -> T_AND . // REDUCE 99
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 128  TRANSICION DE 186 A 128 POR T_OR
-
-100) OPERADOR_ARITMETICO -> T_OR . // REDUCE 100
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 129  TRANSICION DE 186 A 129 POR T_GREATER_GREATER
-
-101) OPERADOR_ARITMETICO -> T_GREATER_GREATER . // REDUCE 101
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 130  TRANSICION DE 186 A 130 POR T_LESS_LESS
-
-102) OPERADOR_ARITMETICO -> T_LESS_LESS . // REDUCE 102
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 131  TRANSICION DE 186 A 131 POR T_GREATER_THAN
-
-103) OPERADOR_LOGICO -> T_GREATER_THAN . // REDUCE 103
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 132  TRANSICION DE 186 A 132 POR T_GREATER_EQ
-
-104) OPERADOR_LOGICO -> T_GREATER_EQ . // REDUCE 104
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 133  TRANSICION DE 186 A 133 POR T_LESS_THAN
-
-105) OPERADOR_LOGICO -> T_LESS_THAN . // REDUCE 105
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 134  TRANSICION DE 186 A 134 POR T_LESS_EQ
-
-106) OPERADOR_LOGICO -> T_LESS_EQ . // REDUCE 106
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 135  TRANSICION DE 186 A 135 POR T_EQ_EQ
-
-107) OPERADOR_LOGICO -> T_EQ_EQ . // REDUCE 107
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 136  TRANSICION DE 186 A 136 POR T_NOT_EQ
-
-108) OPERADOR_LOGICO -> T_NOT_EQ . // REDUCE 108
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 137  TRANSICION DE 186 A 137 POR T_OR_OR
-
-109) OPERADOR_LOGICO -> T_OR_OR . // REDUCE 109
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 138  TRANSICION DE 186 A 138 POR T_AND_AND
-
-110) OPERADOR_LOGICO -> T_AND_AND . // REDUCE 110
 ------------------------------------------------------------------------------------------------------------------
 ESTADO 204  TRANSICION DE 188 A 204 POR T_CBKT_RIGHT                  
 
@@ -2746,7 +2637,7 @@ ESTADO 209  TRANSICION DE 193 A 209 POR PARAMETROS_D_FUNCION_DERECHA
 
 128) PARAMETROS_D_FUNCION -> T_IDENT TIPO_DE_VARIABLE PARAMETROS_D_FUNCION_DERECHA . // REDUCE 128
 ------------------------------------------------------------------------------------------------------------------
-ESTADO 210  TRANSICION DE 193 A 210 POR PARAMETROS_D_FUNCION_DERECHA         
+ESTADO 210  TRANSICION DE 193 A 210 POR T_COMMA         
 
 130) PARAMETROS_D_FUNCION_DERECHA -> T_COMMA . T_IDENT TIPO_DE_VARIABLE PARAMETROS_D_FUNCION_DERECHA
 ------------------------------------------------------------------------------------------------------------------
@@ -3198,7 +3089,7 @@ REPETIDO ESTADO 101  TRANSICION DE 218 A 101 POR T_MULT
 
 38) TIPO_PUNTERO -> T_MULT . TIPO_NORMAL
 ------------------------------------------------------------------------------------------------------------------
-ESTADO 223  TRANSICION DE 219 A 223 POR TIPO_DE_VARIABLE         PENDIENTE
+ESTADO 223  TRANSICION DE 219 A 223 POR TIPO_DE_VARIABLE
 
 130) PARAMETROS_D_FUNCION_DERECHA -> T_COMMA T_IDENT TIPO_DE_VARIABLE . PARAMETROS_D_FUNCION_DERECHA
 130) PARAMETROS_D_FUNCION_DERECHA -> . T_COMMA T_IDENT TIPO_DE_VARIABLE PARAMETROS_D_FUNCION_DERECHA
