@@ -114,11 +114,11 @@ type Rule struct {
 	noTerminal string
 }
 
-func GetRules() [9]Rule {
+func GetRules() [142]Rule {
 	var file, _ = os.Open("syntax_files/rules_length.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var rules = [9]Rule{}
+	var rules = [142]Rule{}
 	var i = 0
 	// se agrega el tamaño de la regla en cuanto a
 	// elementos que la contiene
@@ -133,7 +133,7 @@ func GetRules() [9]Rule {
 }
 
 func GetActionTable() [228][83]int {
-	var file, _ = os.Open("syntax_files/action_2.csv")
+	var file, _ = os.Open("syntax_files/action_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var actionTable = [228][83]int{}
@@ -152,7 +152,7 @@ func GetActionTable() [228][83]int {
 }
 
 func GetGotoTable() [228][59]int {
-	var file, _ = os.Open("syntax_files/goto_2.csv")
+	var file, _ = os.Open("syntax_files/goto_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var gotoTable = [228][59]int{}
