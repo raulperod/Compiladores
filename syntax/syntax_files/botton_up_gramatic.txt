@@ -1461,7 +1461,7 @@ REPETIDO ESTADO 85  TRANSICION DE 85 A 85 POR T_STRING_V
 
 8) PAQUETES -> T_STRING_V . PAQUETES
 ------------------------------------------------------------------------------------------------------------------
-ESTADO 156  TRANSICION DE 101 A 156 POR T_MULT
+ESTADO 156  TRANSICION DE 101 A 156 POR TIPO_NORMAL
 
 38) TIPO_PUNTERO -> T_MULT TIPO_NORMAL . // REDUCE 38
 ------------------------------------------------------------------------------------------------------------------
@@ -1777,20 +1777,58 @@ ESTADO 173  TRANSICION DE 145 A 173 POR VALOR_VARIABLE
 88) PARAMETROS_LLAMADA_DERECHA -> T_COMMA VALOR_VARIABLE . PARAMETROS_LLAMADA_DERECHA
 88) PARAMETROS_LLAMADA_DERECHA -> . T_COMMA VALOR_VARIABLE PARAMETROS_LLAMADA_DERECHA
 89) PARAMETROS_LLAMADA_DERECHA -> EPSILON . // REDUCE 89
-66) VALOR_VARIABLE -> . T_BKT_LEFT VALOR_VARIABLE T_BKT_RIGHT
-67) VALOR_VARIABLE -> . ARREGLO
-68) VALOR_VARIABLE -> . MAP
-69) VALOR_VARIABLE -> . OPERACIONES
-70) ARREGLO -> . DIMENCIONES_ARREGLO TIPO_DE_VARIABLE
-71) DIMENCIONES_ARREGLO -> . T_SBKT_LEFT T_INT_V T_SBKT_RIGHT DIMENCIONES_ARREGLO_DERECHA
-74) MAP -> . T_MAP T_SBKT_LEFT LLAVE T_SBKT_RIGHT TIPO_DE_VARIABLE
-75) OPERACIONES -> . VALOR_OPERACION OPERACIONES_DERECHA
-76) VALOR_OPERACION -> . NEGACION VALOR_OPERACION_DERECHA 
-77) VALOR_OPERACION -> . T_INT_V
-78) VALOR_OPERACION -> . T_FLOAT_V
-79) VALOR_OPERACION -> . T_STRING_V
-80) NEGACION -> . T_NOT
-81) NEGACION -> EPSILON . // REDUCE 81
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 72  TRANSICION DE 145 A 72 POR T_BKT_LEFT
+
+66) VALOR_VARIABLE -> T_BKT_LEFT . VALOR_VARIABLE T_BKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 73 TRANSICION DE 145 A 73 POR ARREGLO
+
+67) VALOR_VARIABLE -> ARREGLO . // REDUCE 67
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 74 TRANSICION DE 145 A 74 POR MAP
+
+68) VALOR_VARIABLE -> MAP . // REDUCE 68
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 75 TRANSICION DE 145 A 75 POR OPERACIONES
+
+69) VALOR_VARIABLE -> OPERACIONES . // REDUCE 69
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 76 TRANSICION DE 145 A 76 POR DIMENCIONES_ARREGLO
+
+70) ARREGLO -> DIMENCIONES_ARREGLO . TIPO_DE_VARIABLE
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 77 TRANSICION DE 145 A 77 POR T_SBKT_LEFT
+
+71) DIMENCIONES_ARREGLO -> T_SBKT_LEFT . T_INT_V T_SBKT_RIGHT DIMENCIONES_ARREGLO_DERECHA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 78 TRANSICION DE 145 A 78 POR T_MAP
+
+74) MAP -> T_MAP . T_SBKT_LEFT LLAVE T_SBKT_RIGHT TIPO_DE_VARIABLE
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 62  TRANSICION DE 145 A 62 POR VALOR_OPERACION 
+
+75) OPERACIONES -> VALOR_OPERACION . OPERACIONES_DERECHA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 63  TRANSICION DE 145 A 63 POR NEGACION
+
+76) VALOR_OPERACION -> NEGACION . VALOR_OPERACION_DERECHA 
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 64  TRANSICION DE 145 A 64 POR T_INT_V
+
+77) VALOR_OPERACION -> T_INT_V . // REDUCE 77
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 65  TRANSICION DE 145 A 65 POR T_FLOAT_V
+
+78) VALOR_OPERACION -> T_FLOAT_V . // REDUCE 78
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 66  TRANSICION DE 145 A 66 POR T_STRING_V
+
+79) VALOR_OPERACION -> T_STRING_V . // REDUCE 79
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 67  TRANSICION DE 145 A 67 POR T_NOT
+
+80) NEGACION -> T_NOT . // REDUCE 80
 ------------------------------------------------------------------------------------------------------------------
 ESTADO 174  TRANSICION DE 146 A 174 POR T_BKT_RIGHT                        
 
@@ -2288,6 +2326,7 @@ ESTADO 192  TRANSICION DE 171 A 192 POR T_BKT_RIGHT
 
 127) DEFINICION_DE_FUNCION -> T_FUNC T_IDENT T_BKT_LEFT PARAMETROS_D_FUNCION T_BKT_RIGHT . TIPOS_RETURN T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
 132) TIPOS_RETURN -> . TIPO_DE_VARIABLE TIPOS_RETURN_DERECHA
+142) TIPOS_RETURN -> EPSILON . // REDUCE 142
 25) TIPO_DE_VARIABLE -> . TIPO_NORMAL
 26) TIPO_DE_VARIABLE -> . TIPO_PUNTERO
 27) TIPO_NORMAL -> . T_INT_R
@@ -2372,58 +2411,6 @@ ESTADO 194  TRANSICION DE 173 A 194 POR PARAMETROS_LLAMADA_DERECHA
 REPETIDO ESTADO 145  TRANSICION DE 173 A 145 POR T_COMMA
 
 88) PARAMETROS_LLAMADA_DERECHA -> T_COMMA . VALOR_VARIABLE PARAMETROS_LLAMADA_DERECHA
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 72  TRANSICION DE 173 A 72 POR T_BKT_LEFT
-
-66) VALOR_VARIABLE -> T_BKT_LEFT . VALOR_VARIABLE T_BKT_RIGHT
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 73 TRANSICION DE 173 A 73 POR ARREGLO
-
-67) VALOR_VARIABLE -> ARREGLO . // REDUCE 67
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 74 TRANSICION DE 173 A 74 POR MAP
-
-68) VALOR_VARIABLE -> MAP . // REDUCE 68
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 75 TRANSICION DE 173 A 75 POR OPERACIONES
-
-69) VALOR_VARIABLE -> OPERACIONES . // REDUCE 69
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 76 TRANSICION DE 173 A 76 POR DIMENCIONES_ARREGLO
-
-70) ARREGLO -> DIMENCIONES_ARREGLO . TIPO_DE_VARIABLE
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 77 TRANSICION DE 173 A 77 POR T_SBKT_LEFT
-
-71) DIMENCIONES_ARREGLO -> T_SBKT_LEFT . T_INT_V T_SBKT_RIGHT DIMENCIONES_ARREGLO_DERECHA
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 78 TRANSICION DE 173 A 78 POR T_MAP
-
-74) MAP -> T_MAP . T_SBKT_LEFT LLAVE T_SBKT_RIGHT TIPO_DE_VARIABLE
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 62  TRANSICION DE 173 A 62 POR VALOR_OPERACION 
-
-75) OPERACIONES -> VALOR_OPERACION . OPERACIONES_DERECHA
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 63  TRANSICION DE 173 A 63 POR NEGACION
-
-76) VALOR_OPERACION -> NEGACION . VALOR_OPERACION_DERECHA 
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 64  TRANSICION DE 173 A 64 POR T_INT_V
-
-77) VALOR_OPERACION -> T_INT_V . // REDUCE 77
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 65  TRANSICION DE 173 A 65 POR T_FLOAT_V
-
-78) VALOR_OPERACION -> T_FLOAT_V . // REDUCE 78
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 66  TRANSICION DE 173 A 66 POR T_STRING_V
-
-79) VALOR_OPERACION -> T_STRING_V . // REDUCE 79
-------------------------------------------------------------------------------------------------------------------
-REPETIDO ESTADO 67  TRANSICION DE 173 A 67 POR T_NOT
-
-80) NEGACION -> T_NOT . // REDUCE 80
 ------------------------------------------------------------------------------------------------------------------
 ESTADO 195  TRANSICION DE 175 A 195 POR DIMENCIONES_ARREGLO_DERECHA   
 
@@ -3179,3 +3166,148 @@ ESTADO 227  TRANSICION DE 223 A 227 POR PARAMETROS_D_FUNCION_DERECHA
 REPETIDO ESTADO 210  TRANSICION DE 223 A 210 POR T_COMMA
 
 130) PARAMETROS_D_FUNCION_DERECHA -> T_COMMA . T_IDENT TIPO_DE_VARIABLE PARAMETROS_D_FUNCION_DERECHA
+------------------------------------------------------------------------------------------------------------------
+ESTADO 228  TRANSICION DE 189 A 228 POR T_COLON
+
+125) CASE_DEFAULT -> T_DEFAULT T_COLON . GRUPO_DE_SENTENCIAS
+1) GRUPO_DE_SENTENCIAS -> . SENTENCIA GRUPO_DE_SENTENCIAS
+2) GRUPO_DE_SENTENCIAS -> EPSILON . // REDUCE 2
+3) SENTENCIA -> . IMPORTACION
+4) SENTENCIA -> . DEFINICION_PAQUETE
+5) SENTENCIA -> . DEFINICION_DE_VARIABLE
+6) SENTENCIA -> . DEFINICION_DE_ESTRUCTURA
+7) SENTENCIA -> . ASIGNACION_DE_VARIABLE
+8) SENTENCIA -> . SENTENCIA_IF
+9) SENTENCIA -> . SWITCH
+10) SENTENCIA -> . DEFINICION_DE_FUNCION
+11) SENTENCIA -> . RETURN
+12) SENTENCIA -> . DEFER
+13) SENTENCIA -> . GO
+14) SENTENCIA -> . CICLO_FOR
+15) IMPORTACION -> . T_IMPORT IMPORTACION_DERECHA
+20) DEFINICION_PAQUETE -> . T_PACKAGE T_IDENT
+21) DEFINICION_DE_VARIABLE -> . T_VAR IDENTIFICADORES TIPO_DE_VARIABLE
+39) DEFINICION_DE_ESTRUCTURA -> . T_TYPE T_IDENT T_STRUCT T_CBKT_LEFT DECLARACION_DE_VARIABLES_ESTRUCTURA T_CBKT_RIGHT
+42) ASIGNACION_DE_VARIABLE -> . IDENTIFICADORES_ASIGNACION ASIGNACION_DE_VARIABLE_DERECHA
+43) IDENTIFICADORES_ASIGNACION -> . T_IDENT DIMENCIONES IDENTIFICADORES_ASIGNACION_DERECHA
+113) SENTENCIA_IF -> . IF GRUPO_DE_ELSE_IF ELSE
+114) IF -> . T_IF CONDICION T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT 
+121) SWITCH -> . T_SWITCH T_IDENT T_CBKT_LEFT GRUPO_DE_CASES CASE_DEFAULT T_CBKT_RIGHT
+127) DEFINICION_DE_FUNCION -> . T_FUNC T_IDENT T_BKT_LEFT PARAMETROS_D_FUNCION T_BKT_RIGHT TIPOS_RETURN T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
+135) RETURN -> . T_RETURN PARAMETROS_LLAMADA
+136) DEFER -> . T_DEFER IDENTIFICADORES_ASIGNACION LLAMADA_A_FUNCION 
+137) GO -> . T_GO IDENTIFICADORES_ASIGNACION LLAMADA_A_FUNCION
+138) CICLO_FOR -> . T_FOR CICLO_FOR_CENTRO T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+ESTADO 229  TRANSICION DE 228 A 229 POR GRUPO_DE_SENTENCIAS
+
+125) CASE_DEFAULT -> T_DEFAULT T_COLON GRUPO_DE_SENTENCIAS . // REDUCE 125
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 2  TRANSICION DE 228 A 2 POR SENTENCIA
+
+1) GRUPO_DE_SENTENCIAS -> SENTENCIA . GRUPO_DE_SENTENCIAS
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 3  TRANSICION DE 228 A 3 POR IMPORTACION
+
+3) SENTENCIA -> IMPORTACION . // REDUCE 3
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 4  TRANSICION DE 228 A 4 POR DEFINICION_PAQUETE
+
+4) SENTENCIA -> DEFINICION_PAQUETE . // REDUCE 4
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 5  TRANSICION DE 228 A 5 POR DEFINICION_DE_VARIABLE
+
+5) SENTENCIA -> DEFINICION_DE_VARIABLE . // REDUCE 5
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 6  TRANSICION DE 228 A 6 POR DEFINICION_DE_ESTRUCTURA
+
+6) SENTENCIA -> DEFINICION_DE_ESTRUCTURA . // REDUCE 6
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 7  TRANSICION DE 228 A 7 POR ASIGNACION_DE_VARIABLE
+
+7) SENTENCIA -> ASIGNACION_DE_VARIABLE . // REDUCE 7
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 8 TRANSICION DE 228 A 8 POR SENTENCIA_IF
+
+8) SENTENCIA -> SENTENCIA_IF . // REDUCE 8
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 9 TRANSICION DE 228 A 9 POR SWITCH
+
+9) SENTENCIA -> SWITCH . // REDUCE 9
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 10 TRANSICION DE 228 A 10 POR DEFINICION_DE_FUNCION
+
+10) SENTENCIA -> DEFINICION_DE_FUNCION . // REDUCE 10
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 11 TRANSICION DE 228 A 11 POR RETURN
+
+11) SENTENCIA -> RETURN . // REDUCE 11
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 12 TRANSICION DE 228 A 12 POR DEFER
+
+12) SENTENCIA -> DEFER . // REDUCE 12
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 13 TRANSICION DE 228 A 13 POR GO
+
+13) SENTENCIA -> GO . // REDUCE 13
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 14  TRANSICION DE 228 A 14 POR CICLO_FOR
+
+14) SENTENCIA -> CICLO_FOR . // REDUCE 14
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 15  TRANSICION DE 228 A 15 POR T_IMPORT                  
+
+15) IMPORTACION -> T_IMPORT . IMPORTACION_DERECHA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 16 TRANSICION DE 228 A 16 POR T_PACKAGE                 
+
+20) DEFINICION_PAQUETE -> T_PACKAGE . T_IDENT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 17 TRANSICION DE 228 A 17 POR T_VAR                     
+
+21) DEFINICION_DE_VARIABLE -> T_VAR . IDENTIFICADORES TIPO_DE_VARIABLE
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 18 TRANSICION DE 228 A 18 POR T_TYPE                    
+
+39) DEFINICION_DE_ESTRUCTURA -> T_TYPE . T_IDENT T_STRUCT T_CBKT_LEFT DECLARACION_DE_VARIABLES_ESTRUCTURA T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 19 TRANSICION DE 228 A 19 POR IDENTIFICADORES_ASIGNACION    
+
+42) ASIGNACION_DE_VARIABLE -> IDENTIFICADORES_ASIGNACION . ASIGNACION_DE_VARIABLE_DERECHA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 20 TRANSICION DE 228 A 20 POR T_IDENT                      
+
+43) IDENTIFICADORES_ASIGNACION -> T_IDENT . DIMENCIONES IDENTIFICADORES_ASIGNACION_DERECHA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 21 TRANSICION DE 228 A 21 POR IF                           
+
+113) SENTENCIA_IF -> IF . GRUPO_DE_ELSE_IF ELSE
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 22 TRANSICION DE 228 A 22 POR T_IF                         
+
+114) IF -> T_IF . CONDICION T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 23 TRANSICION DE 228 A 23 POR T_SWITCH                    
+
+121) SWITCH -> T_SWITCH . T_IDENT T_CBKT_LEFT GRUPO_DE_CASES CASE_DEFAULT T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 24 TRANSICION DE 228 A 24 POR T_FUNC                    
+
+127) DEFINICION_DE_FUNCION -> T_FUNC . T_IDENT T_BKT_LEFT PARAMETROS_D_FUNCION T_BKT_RIGHT TIPOS_RETURN T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 25 TRANSICION DE 228 A 25 POR T_RETURN                  
+
+135) RETURN -> T_RETURN . PARAMETROS_LLAMADA
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 26 TRANSICION DE 228 A 26 POR T_DEFER                     
+
+136) DEFER -> T_DEFER . IDENTIFICADORES_ASIGNACION LLAMADA_A_FUNCION
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 27 TRANSICION DE 228 A 27 POR T_GO                        
+
+137) GO -> T_GO . IDENTIFICADORES_ASIGNACION LLAMADA_A_FUNCION
+------------------------------------------------------------------------------------------------------------------
+REPETIDO ESTADO 28 TRANSICION DE 228 A 28 POR T_FOR                       
+
+138) CICLO_FOR -> T_FOR . CICLO_FOR_CENTRO T_CBKT_LEFT GRUPO_DE_SENTENCIAS T_CBKT_RIGHT
+------------------------------------------------------------------------------------------------------------------

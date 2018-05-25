@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"./lexical"
 )
@@ -62,13 +61,13 @@ func (s *Stack) PopN(n int) {
 }
 
 func (s *Stack) PrintStack() {
-	var e *Element
-	e = s.topOfStack
+	var e = s.topOfStack
 
 	for e != nil {
-		fmt.Println("Estado:", e.state, "Valor:", e.value)
+		fmt.Printf("| %s | %d ", e.value, e.state)
 		e = e.next
 	}
+	fmt.Println("|")
 }
 
 func (s *Stack) TOS() int {
@@ -114,11 +113,11 @@ type Rule struct {
 	noTerminal string
 }
 
-func GetRules() [142]Rule {
+func GetRules() [143]Rule {
 	var file, _ = os.Open("syntax_files/rules_length.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var rules = [142]Rule{}
+	var rules = [143]Rule{}
 	var i = 0
 	// se agrega el tamaño de la regla en cuanto a
 	// elementos que la contiene
@@ -132,11 +131,11 @@ func GetRules() [142]Rule {
 	return rules
 }
 
-func GetActionTable() [228][83]int {
+func GetActionTable() [230][83]int {
 	var file, _ = os.Open("syntax_files/action_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var actionTable = [228][83]int{}
+	var actionTable = [230][83]int{}
 	var state = 0
 
 	for fileScanner.Scan() {
@@ -151,11 +150,11 @@ func GetActionTable() [228][83]int {
 	return actionTable
 }
 
-func GetGotoTable() [228][59]int {
+func GetGotoTable() [230][59]int {
 	var file, _ = os.Open("syntax_files/goto_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
-	var gotoTable = [228][59]int{}
+	var gotoTable = [230][59]int{}
 	var state = 0
 
 	for fileScanner.Scan() {
@@ -170,34 +169,49 @@ func GetGotoTable() [228][59]int {
 	return gotoTable
 }
 
-func IsAccepted(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsAccepted(action [230][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	return action[stack.TOS()][terminales[input.TOQ()]] == 1000
 }
 
-func IsShift(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsShift(action [230][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
-	fmt.Println("shift:", action[tos][terminal])
 	return action[tos][terminal] > 0 && action[tos][terminal] < 1000
 }
 
-func GetShift(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) (int, string) {
+func GetShift(action [230][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) (int, string) {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	return action[tos][terminal], input.TOQ()
 }
 
-func IsReduce(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
+func IsReduce(action [230][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) bool {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
-	fmt.Println("reduce:", action[tos][terminal])
 	return action[tos][terminal] > 1000 && action[tos][terminal] < 2000
 }
 
-func GetReduce(action [228][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) int {
+func GetReduce(action [230][83]int, stack *Stack, input *lexical.Queue, terminales map[string]int) int {
 	var tos = stack.TOS()
 	var terminal = terminales[input.TOQ()]
 	return action[tos][terminal] - 1000
+}
+
+func PrintStep(stack *Stack, input *lexical.Queue, action int, tipoDeAccion int) {
+	fmt.Println("------------------------------------------------------------------------------------")
+	fmt.Printf("STACK:\n\n")
+	stack.PrintStack()
+	fmt.Printf("\nINPUT:\n\n")
+	input.PrintQueue()
+	fmt.Printf("\nACTION:\n\n")
+	if tipoDeAccion == 0 {
+		fmt.Println("Shift: ", action)
+	} else if tipoDeAccion == 1 {
+		fmt.Println("Reduce: ", action)
+	} else {
+		fmt.Println("CADENA ACEPTADA")
+	}
+
 }
 
 func SyntacticAnalysis(inputTokens *lexical.Queue) (bool, string) {
@@ -209,43 +223,44 @@ func SyntacticAnalysis(inputTokens *lexical.Queue) (bool, string) {
 	var gotoTable = GetGotoTable()      // int
 	var stack = NewStack()
 	var input = inputTokens
+	var shifti, reducei, ruleiLength, noTerminalGoto int
+	var terminal, noTerminalRulei string
 	// analisis sintactico
 	stack.Push(0, rules[0].noTerminal)
 
 	for !IsAccepted(actionTable, stack, input, terminales) {
 		if IsShift(actionTable, stack, input, terminales) {
-			var shifti, terminal = GetShift(actionTable, stack, input, terminales)
+			shifti, terminal = GetShift(actionTable, stack, input, terminales)
+			PrintStep(stack, input, shifti, 0)
 			stack.Push(shifti, terminal) // ingresa el estado y el terminal a la pila
 			input.Pop()                  // recorre al siguiente token
-			stack.PrintStack()
-			input.PrintQueue()
-			time.Sleep(5 * time.Second)
+			//time.Sleep(1 * time.Second)
 		} else if IsReduce(actionTable, stack, input, terminales) {
-			var reducei = GetReduce(actionTable, stack, input, terminales)
-			var ruleiLength = rules[reducei].lenght
-			var noTerminalRulei = rules[reducei].noTerminal
-			var noTerminalGoto = noTerminales[noTerminalRulei]
+			reducei = GetReduce(actionTable, stack, input, terminales)
+			ruleiLength = rules[reducei].lenght
+			noTerminalRulei = rules[reducei].noTerminal
+			noTerminalGoto = noTerminales[noTerminalRulei]
+			PrintStep(stack, input, reducei, 1)
 			stack.PopN(ruleiLength)
 			stack.Push(gotoTable[stack.TOS()][noTerminalGoto], noTerminalRulei)
-			stack.PrintStack()
-			input.PrintQueue()
-			time.Sleep(5 * time.Second)
+			//time.Sleep(1 * time.Second)
 		} else {
-			return false, "Error"
+			fmt.Println("------------------------------------------------------------------------------------")
+			return false, "Error en la linea " + strconv.Itoa(input.LastLine())
 		}
 	}
-
+	fmt.Println("------------------------------------------------------------------------------------")
+	PrintStep(stack, input, reducei, 3)
+	fmt.Println("------------------------------------------------------------------------------------")
 	return true, "Sin errores"
 }
 
 func main() {
-
-	var input = lexical.LexicalAnalysis("test.txt")
+	var input = lexical.LexicalAnalysis("test.go")
 	var valid, err = SyntacticAnalysis(input)
 	if !valid {
 		fmt.Println(err)
 	} else {
 		fmt.Println("La cadena es valida")
 	}
-
 }

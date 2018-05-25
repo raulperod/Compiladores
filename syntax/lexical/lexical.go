@@ -9,13 +9,16 @@ import (
 )
 
 const (
-	df        = -1
-	diag      = 47 // diagonal
-	ast       = 42 // asterisk
-	space     = 32
-	tab       = 9
-	badState  = -1
-	initState = 0
+	df           = -1
+	diag         = 47 // diagonal
+	ast          = 42 // asterisk
+	space        = 32
+	tab          = 9
+	badState     = -1
+	badState2    = -2
+	mediumState  = 118
+	mediumState2 = 119
+	initState    = 0
 )
 
 type Token struct {
@@ -73,13 +76,17 @@ func (q *Queue) Pop() *Token {
 }
 
 func (q *Queue) PrintQueue() {
-	var t *Token
-	t = q.init
+	var t = q.init
 
 	for t != nil {
-		fmt.Println("Token:", t.t_type, "Linea:", t.line)
+		fmt.Printf("| %s ", t.t_type)
 		t = t.next
 	}
+	fmt.Println("|")
+}
+
+func (q *Queue) LastLine() int {
+	return q.init.line
 }
 
 func (q *Queue) TOQ() string {
@@ -88,7 +95,7 @@ func (q *Queue) TOQ() string {
 
 func GetTT() [193][68]int {
 
-	var file, _ = os.Open("lexical_files/transitions_table_2.csv")
+	var file, _ = os.Open("lexical_files/transitions_table_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var stateTransitions = [193][68]int{}
@@ -188,14 +195,21 @@ func LexicalAnalysis(archivo string) *Queue {
 							state, prevState = 0, 0
 							state = tt[state][GetSymbol(int(c))]
 							if state == badState {
+								fmt.Println("Error: Se leyo un cadena irreconocible en la linea:", line)
 								os.Exit(1)
 							}
+						} else if state == badState2 {
+							fmt.Println("Error: Se leyo un cadena irreconocible en la linea:", line)
+							os.Exit(1)
 						}
 						prev = df
-					} else if prev != space || prev != tab {
-						prev = space
-						inputTokens.Append(GetToken(tokens, state, line))
-						state, prevState = 0, 0
+					} else { // si es espacio o tab
+						prev = df
+						if state != mediumState && state != mediumState2 {
+							inputTokens.Append(GetToken(tokens, state, line))
+							state, prevState = 0, 0
+						}
+
 					}
 				}
 			} else {
@@ -207,6 +221,10 @@ func LexicalAnalysis(archivo string) *Queue {
 					prev = df
 				}
 			}
+		}
+		if state == mediumState || state == mediumState2 {
+			fmt.Println("Error: Se leyo un cadena irreconocible en la linea:", line)
+			os.Exit(1)
 		}
 		inputTokens.Append(GetToken(tokens, state, line))
 		state, prevState = 0, 0
