@@ -1,2 +1,2 @@
-# Compiladores
-Tareas de la clase de compiladores
+# Parser Go
+Analisis lexico y sintactico 
