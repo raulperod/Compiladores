@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Parser GO</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body style="background: #e0ebf5;">
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">Parser Go</a>
+    </nav>
+
+    <div class="containter mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div id="app" class="card bg-dark">
+                    <form>
+                        <div class="card-body">
+                            <textarea v-model="code" class="form-control" style="background: #FFFFD8;" cols="30" rows="10"></textarea>
+                        </div>  
+                        <div class="card-footer">
+                            <div class="form-group">
+                                <textarea v-model="message" class="form-control" style="background: #FFFFD8;" cols="30" rows="2" disabled></textarea>
+                                <br>
+                                <button @click.prevent="ejecutar" type="submit" class="btn btn-primary btn-block">Ejecutar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- vue js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- javascript -->
+    <script src="vue.js"></script>
+
+</body>
+</html>

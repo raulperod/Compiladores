@@ -1,4 +1,4 @@
-package main
+package syntax
 
 import (
 	"bufio"
@@ -75,7 +75,7 @@ func (s *Stack) TOS() int {
 }
 
 func GetTerminals() map[string]int {
-	var file, _ = os.Open("syntax_files/terminales.csv")
+	var file, _ = os.Open("./syntax/syntax_files/terminales.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var terminals = make(map[string]int)
@@ -92,7 +92,7 @@ func GetTerminals() map[string]int {
 }
 
 func GetNoTerminals() map[string]int {
-	var file, _ = os.Open("syntax_files/no_terminales.csv")
+	var file, _ = os.Open("./syntax/syntax_files/no_terminales.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var noTerminals = make(map[string]int)
@@ -114,7 +114,7 @@ type Rule struct {
 }
 
 func GetRules() [143]Rule {
-	var file, _ = os.Open("syntax_files/rules_length.csv")
+	var file, _ = os.Open("./syntax/syntax_files/rules_length.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var rules = [143]Rule{}
@@ -132,7 +132,7 @@ func GetRules() [143]Rule {
 }
 
 func GetActionTable() [230][83]int {
-	var file, _ = os.Open("syntax_files/action_raw.csv")
+	var file, _ = os.Open("./syntax/syntax_files/action_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var actionTable = [230][83]int{}
@@ -151,7 +151,7 @@ func GetActionTable() [230][83]int {
 }
 
 func GetGotoTable() [230][59]int {
-	var file, _ = os.Open("syntax_files/goto_raw.csv")
+	var file, _ = os.Open("./syntax/syntax_files/goto_raw.csv")
 	defer file.Close()
 	var fileScanner = bufio.NewScanner(file)
 	var gotoTable = [230][59]int{}
@@ -211,10 +211,9 @@ func PrintStep(stack *Stack, input *lexical.Queue, action int, tipoDeAccion int)
 	} else {
 		fmt.Println("CADENA ACEPTADA")
 	}
-
 }
 
-func SyntacticAnalysis(inputTokens *lexical.Queue) (bool, string) {
+func SyntacticAnalysis(inputTokens *lexical.Queue) string {
 	// obtengo las tablas necesarias
 	var terminales = GetTerminals()     // map
 	var noTerminales = GetNoTerminals() // map
@@ -246,21 +245,23 @@ func SyntacticAnalysis(inputTokens *lexical.Queue) (bool, string) {
 			//time.Sleep(1 * time.Second)
 		} else {
 			fmt.Println("------------------------------------------------------------------------------------")
-			return false, "Error en la linea " + strconv.Itoa(input.LastLine())
+			return "Error en la linea " + strconv.Itoa(input.LastLine())
 		}
 	}
 	fmt.Println("------------------------------------------------------------------------------------")
 	PrintStep(stack, input, reducei, 3)
 	fmt.Println("------------------------------------------------------------------------------------")
-	return true, "Sin errores"
+	return "La cadena es valida"
 }
 
-func main() {
-	var input = lexical.LexicalAnalysis("test.go")
-	var valid, err = SyntacticAnalysis(input)
-	if !valid {
-		fmt.Println(err)
-	} else {
-		fmt.Println("La cadena es valida")
+func Validate(code string) string {
+	// analisis lexico
+	var input, msg, err = lexical.LexicalAnalysisForWeb(code)
+	if err {
+		input.PrintQueue()
+		return msg
 	}
+	msg = SyntacticAnalysis(input)
+	// analisis sintactico
+	return msg
 }
